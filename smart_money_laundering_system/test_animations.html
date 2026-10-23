@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Animation Test - Open in Browser Console</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #00ff00;
+        }
+        .test-box {
+            background: #2a2a2a;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #00ff00;
+        }
+        button {
+            background: #00ff00;
+            color: #1a1a1a;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #00cc00;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background: #333;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Smart Money Laundering Animation Diagnostics</h1>
+    <p>Open this page while viewing your Smart Money Laundering app at <a href="http://localhost:8080" target="_blank" style="color: #00ff00;">localhost:8080</a></p>
+    
+    <div class="test-box">
+        <h2>Quick Tests (Run these in browser console at localhost:8080)</h2>
+        <button onclick="copyToClipboard(test1)">Copy Test 1: Check Elements</button>
+        <button onclick="copyToClipboard(test2)">Copy Test 2: Check Revealed</button>
+        <button onclick="copyToClipboard(test3)">Copy Test 3: Force Reveal All</button>
+        <div id="result" class="result">Click a button to copy test code</div>
+    </div>
+
+    <div class="test-box">
+        <h3>Test 1: Check if animation elements exist</h3>
+        <pre>
+const elements = document.querySelectorAll('[class*="scroll-"]');
+console.log(`Found ${elements.length} animated elements`);
+elements.forEach((el, i) => {
+    const classes = Array.from(el.classList).filter(c => c.includes('scroll-'));
+    console.log(`${i+1}. ${el.tagName} - ${classes.join(', ')} - Revealed: ${el.classList.contains('revealed')}`);
+});
+        </pre>
+    </div>
+
+    <div class="test-box">
+        <h3>Test 2: Check revealed status and visibility</h3>
+        <pre>
+const animated = document.querySelectorAll('[class*="scroll-"]');
+const revealed = document.querySelectorAll('[class*="scroll-"].revealed');
+const notRevealed = Array.from(animated).filter(el => !el.classList.contains('revealed'));
+console.log(`Total: ${animated.length}, Revealed: ${revealed.length}, Not Revealed: ${notRevealed.length}`);
+notRevealed.forEach(el => {
+    const rect = el.getBoundingClientRect();
+    const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+    console.log('Not revealed but visible?', isVisible, el);
+});
+        </pre>
+    </div>
+
+    <div class="test-box">
+        <h3>Test 3: Force reveal all visible elements</h3>
+        <pre>
+const elements = document.querySelectorAll('[class*="scroll-"]');
+let count = 0;
+elements.forEach(el => {
+    const rect = el.getBoundingClientRect();
+    const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+    if (isVisible && !el.classList.contains('revealed')) {
+        el.classList.add('revealed');
+        count++;
+    }
+});
+console.log(`Force revealed ${count} elements`);
+        </pre>
+    </div>
+
+    <div class="test-box">
+        <h3>Test 4: Check Intersection Observer</h3>
+        <pre>
+// Check if observer is working
+setTimeout(() => {
+    const stats = {
+        total: document.querySelectorAll('[class*="scroll-"]').length,
+        revealed: document.querySelectorAll('[class*="scroll-"].revealed').length,
+        bounce: document.querySelectorAll('.scroll-bounce').length,
+        flip: document.querySelectorAll('.scroll-flip').length,
+        blur: document.querySelectorAll('.scroll-blur').length,
+        counters: document.querySelectorAll('.counter-animate').length,
+    };
+    console.table(stats);
+}, 3000);
+        </pre>
+    </div>
+
+    <div class="test-box">
+        <h3>Test 5: Check element opacity</h3>
+        <pre>
+const elements = document.querySelectorAll('[class*="scroll-"]');
+elements.forEach((el, i) => {
+    const style = window.getComputedStyle(el);
+    const opacity = style.opacity;
+    const display = style.display;
+    const visibility = style.visibility;
+    if (opacity < 0.5 || display === 'none' || visibility === 'hidden') {
+        console.warn(`Element ${i+1} is hidden:`, {opacity, display, visibility}, el);
+    }
+});
+        </pre>
+    </div>
+
+    <div class="test-box">
+        <h3>📋 Manual Fix (If Needed)</h3>
+        <p>If elements are still invisible, paste this in the console:</p>
+        <pre>
+// Emergency fix - makes all animation elements visible
+document.querySelectorAll('[class*="scroll-"]').forEach(el => {
+    el.style.opacity = '1';
+    el.style.transform = 'none';
+    el.classList.add('revealed');
+});
+console.log('✅ All elements made visible');
+        </pre>
+    </div>
+
+    <script>
+        const test1 = `const elements = document.querySelectorAll('[class*="scroll-"]');
+console.log(\`Found \${elements.length} animated elements\`);
+elements.forEach((el, i) => {
+    const classes = Array.from(el.classList).filter(c => c.includes('scroll-'));
+    console.log(\`\${i+1}. \${el.tagName} - \${classes.join(', ')} - Revealed: \${el.classList.contains('revealed')}\`);
+});`;
+
+        const test2 = `const animated = document.querySelectorAll('[class*="scroll-"]');
+const revealed = document.querySelectorAll('[class*="scroll-"].revealed');
+const notRevealed = Array.from(animated).filter(el => !el.classList.contains('revealed'));
+console.log(\`Total: \${animated.length}, Revealed: \${revealed.length}, Not Revealed: \${notRevealed.length}\`);
+notRevealed.forEach(el => {
+    const rect = el.getBoundingClientRect();
+    const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+    console.log('Not revealed but visible?', isVisible, el);
+});`;
+
+        const test3 = `const elements = document.querySelectorAll('[class*="scroll-"]');
+let count = 0;
+elements.forEach(el => {
+    const rect = el.getBoundingClientRect();
+    const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+    if (isVisible && !el.classList.contains('revealed')) {
+        el.classList.add('revealed');
+        count++;
+    }
+});
+console.log(\`Force revealed \${count} elements\`);`;
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                document.getElementById('result').innerHTML = '✅ Copied to clipboard! Now paste it in the browser console at localhost:8080';
+                setTimeout(() => {
+                    document.getElementById('result').innerHTML = 'Click a button to copy test code';
+                }, 5000);
+            });
+        }
+    </script>
+</body>
+</html>
